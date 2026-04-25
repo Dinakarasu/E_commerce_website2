@@ -26,6 +26,25 @@ if (cart_list != null) {
     <%@include file="includes/header.jsp"%>    
 </head>
 <body>
+<%
+String cartMsg = (String) session.getAttribute("cart_msg");
+if (cartMsg != null) {
+    session.removeAttribute("cart_msg");
+%>
+<div id="cart-toast" style="position:fixed; top:20px; right:20px;
+    background:#8b0000; color:white; padding:15px 25px;
+    border-radius:8px; z-index:9999; font-size:16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+    <%=cartMsg%>
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('cart-toast').style.display = 'none';
+    }, 3000);
+</script>
+<%
+}
+%>
     <div class="header">
     <div class="container" form="home">
                     <%@include file="includes/navbar.jsp"%>                

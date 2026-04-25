@@ -5,7 +5,6 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -23,73 +22,108 @@ import com.website.jdbc.JdbcConnection;
 import com.website.pojo.User;
 import com.website.buyer.repository.LoginRepository;
 
-
-/**
- * Servlet implementation class Forgetpassword
- */
 @WebServlet("/ForgetPassword")
 public class ForgetPassword extends HttpServlet {
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			String email = request.getParameter("email");
-			RequestDispatcher dispatcher = null;
-			int otpvalue = 0;
-			HttpSession mySession = request.getSession();
-			LoginRepository repo= new LoginRepository(JdbcConnection.dbGetconnection());
-			User forget = repo.Forgetpassword(email);
-			if(forget!=null) {
-			if(email!=null || !email.equals("")) {
-				// sending otp
-				Random rand = new Random();
-				otpvalue = rand.nextInt(172320);
 
-				String to = email;// change accordingly
-				// Get the session object
-				Properties props = new Properties();
-				props.put("mail.smtp.host", "smtp.gmail.com");
-				props.put("mail.smtp.socketFactory.port", "465");
-				props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-				props.put("mail.smtp.auth", "true");
-				props.put("mail.smtp.port", "465");
-				Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication("selvadina17@gmail.com", "dreawkwearyukzld");// Put your email
-																										// id and
-																										// password here
-					}
-				});
-				// compose message
-				try {
-					MimeMessage message = new MimeMessage(session);
-					message.setFrom(new InternetAddress(email));// change accordingly
-					message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-					message.setSubject("Reset password");
-					message.setText("Hi "+email+","+"\n\n We received a request to reset your account password."+" your OTP is: " + otpvalue+"\n\n please don't share otp from others"+"\n\n Regards, \n E Commerce Online Shopping.");
-					// send message
-					Transport.send(message);
-					System.out.println("message sent successfully");
-				
-			}
-				catch (MessagingException e) {
-					throw new RuntimeException(e);
-				}
-				dispatcher = request.getRequestDispatcher("otp.jsp");
-				request.setAttribute("message","OTP is sent to your email id");
-				//request.setAttribute("connection", con);
-				mySession.setAttribute("otp",otpvalue); 
-				mySession.setAttribute("email",email); 
-				dispatcher.forward(request, response);
-				//request.setAttribute("status", "success");
-			} }else {
-				//System.out.println("Enter valid email address!!!!");
-				response.sendRedirect("forgetpassword.jsp");
-				mySession.setAttribute("failedMsg", "Enter valid email address !!!!");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-			}
-			
-			}catch(Exception e){
-				System.out.println("Error!!!!");
-			}
-			}
+        try {
+            String email = request.getParameter("email");
+            HttpSession mySession = request.getSession();
 
+            LoginRepository repo = new LoginRepository(JdbcConnection.dbGetconnection());
+            User forget = repo.Forgetpassword(email);
+
+            // ✅ check user exists
+            if (forget == null) {
+                mySession.setAttribute("failedMsg", "Email not registered!");
+                response.sendRedirect("forgetpassword.jsp");
+                return;
+            }
+
+            // ✅ get name
+            String name = forget.getName();
+            if (name == null || name.trim().isEmpty()) {
+                name = "Customer";
+            }
+
+            if (email != null && !email.isEmpty()) {
+
+                // ✅ generate OTP
+                Random rand = new Random();
+                int otpvalue = rand.nextInt(90000) + 10000;
+
+                String fromEmail = "selvadina17@gmail.com";
+                String password = "oxfi xmou juvu bcft";
+
+                // ✅ mail config
+                Properties props = new Properties();
+                props.put("mail.smtp.host", "smtp.gmail.com");
+                props.put("mail.smtp.socketFactory.port", "465");
+                props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                props.put("mail.smtp.auth", "true");
+                props.put("mail.smtp.port", "465");
+
+                Session session = Session.getInstance(props,
+                        new javax.mail.Authenticator() {
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(fromEmail, password);
+                            }
+                        });
+
+                // ✅ create email
+                MimeMessage message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(fromEmail, "E-Commerce Team"));
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+                message.setSubject("Reset Password - OTP");
+
+                // ✅ HTML EMAIL CONTENT
+                String htmlContent =
+                        "<html>" +
+                        "<body style='font-family: Segoe UI, Arial; background:#f4f4f4; padding:20px;'>" +
+
+                        "<div style='max-width:600px; margin:auto; background:white; padding:20px; border-radius:10px;'>" +
+
+                        "<h2>Hello, " + name + " 👋</h2>" +
+
+                        "<p>We received a request to reset your password for your <b>E-Commerce Online Shopping</b> account.</p>" +
+
+                        "<div style='text-align:center; margin:20px 0;'>" +
+                        "<p>Your OTP is:</p>" +
+                        "<h1 style='color:#2E86C1; letter-spacing:4px;'>" + otpvalue + "</h1>" +
+                        "</div>" +
+
+                        "<p>⏱ This OTP is valid for <b>10 minutes</b>.</p>" +
+                        "<p style='color:red;'><b>Do not share this OTP with anyone.</b></p>" +
+
+                        "<hr>" +
+
+                        "<p style='font-size:12px; color:#888;'>If you didn’t request this, ignore this email and contact our support team immediately. </p>" +
+
+                        "<p>Regards,<br><b>E-Commerce Team</b></p>" +
+
+                        "</div></body></html>";
+
+                // ✅ IMPORTANT FIX (HTML rendering)
+                message.setContent(htmlContent, "text/html; charset=UTF-8");
+
+                Transport.send(message);
+
+                System.out.println("Email sent successfully");
+
+                // ✅ store OTP in session
+                mySession.setAttribute("otp", otpvalue);
+                mySession.setAttribute("email", email);
+
+                // ✅ redirect to OTP page
+                RequestDispatcher dispatcher = request.getRequestDispatcher("otp.jsp");
+                request.setAttribute("message", "OTP sent to your email");
+                dispatcher.forward(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
