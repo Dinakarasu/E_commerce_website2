@@ -5,6 +5,15 @@
   <artifactId>E_commerce_website2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
+    <resources>
+      <resource>
+        <targetPath>webapp</targetPath>
+        <directory>src/main/webapp</directory>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

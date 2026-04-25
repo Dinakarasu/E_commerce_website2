@@ -1,0 +1,99 @@
+/*This css used for forgot password,reset pages*/
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: ui-monospace;
+}
+body{
+    font-family: 'Raleway',sans-serif;
+    color: #fff;
+    line-height: 1.8;
+    background: url(img/nature.jpg);
+    background-position: center;
+    background-size: cover;
+}
+a{
+    text-decoration: none;
+}
+#container{
+  margin: 30px auto;
+  max-width: 400px;
+  padding: 20px;
+}
+.form-wrap{
+    background: #fff;
+    background-origin:content-box;
+    padding: 15px 25px;
+    color: #333;
+    border-radius: 10px;
+}
+.form-wrap h1,
+.form-wrap p{
+    color: #333;
+    text-align: center;
+}
+.form-wrap .form-group{
+    margin-top: 15px;
+}
+.form-wrap .form-group label{
+    display: block;
+    color: #333;
+}
+.form-wrap .form-group input{
+    width: 100%;
+    padding: 10px;
+    border: #ddd 1px solid;
+    border-radius: 5px;
+}
+.form-wrap button ,a{
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background: #b3200d;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: medium;
+}
+.form-wrap button:hover, a:hover{
+    background:#b1aaa9;
+    color:black;
+    }
+.form-wrap .bottom-text{
+    font-size: 13px;
+    margin-top: 20px;
+}
+footer{
+    text-align: center;
+    margin-top: 10px;
+}
+.dk p{
+    text-align: start;
+    font-size: small;
+}
+.text-center {
+  background: transparent;
+  border:1px solid;
+    border-radius: 5px;
+}
+p.text-center.text-danger {
+    color: #b61b1b;
+    background: gainsboro;
+}
+p.text-center.text-safer {
+    color: #008040;
+    background: gainsboro;
+}
+a{
+    text-decoration: none;
+}
+@media only screen and (max-width: 600px){
+    #container{
+        width: 350px;
+        font-size: x-small;
+    }
+}
