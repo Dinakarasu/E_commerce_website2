@@ -1,11 +1,9 @@
 package com.website;
 
-import java.io.File;
+import java.io.*;
+import java.net.URL;
 import org.apache.catalina.Context;
-import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.catalina.webresources.DirResourceSet;
-import org.apache.catalina.webresources.StandardRoot;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -16,42 +14,35 @@ public class Main {
         tomcat.setPort(Integer.parseInt(port));
         tomcat.getConnector();
 
-        // Try multiple webapp locations
-        String[] possiblePaths = {
-            "src/main/webapp",
-            "webapp",
-            "WebContent",
-            "web"
-        };
+        // Extract webapp from inside JAR to temp directory
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), "webapp");
+        tempDir.mkdirs();
+        extractWebapp(tempDir);
 
-        File webappDir = null;
-        for (String path : possiblePaths) {
-            File f = new File(path);
-            if (f.exists()) {
-                webappDir = f;
-                System.out.println("Found webapp at: " + f.getAbsolutePath());
-                break;
-            }
-        }
+        System.out.println("Webapp extracted to: " + tempDir.getAbsolutePath());
 
-        if (webappDir == null) {
-            webappDir = new File("webapp");
-            webappDir.mkdirs();
-            System.out.println("No webapp found! Created empty at: " + webappDir.getAbsolutePath());
-        }
-
-        Context ctx = tomcat.addWebapp("", webappDir.getAbsolutePath());
-
-        File classes = new File("target/classes");
-        if (classes.exists()) {
-            WebResourceRoot resources = new StandardRoot(ctx);
-            resources.addPreResources(new DirResourceSet(
-                resources, "/WEB-INF/classes",
-                classes.getAbsolutePath(), "/"));
-            ctx.setResources(resources);
-        }
+        Context ctx = tomcat.addWebapp("", tempDir.getAbsolutePath());
+        ctx.setReloadable(false);
 
         tomcat.start();
         tomcat.getServer().await();
+    }
+
+    private static void extractWebapp(File targetDir) throws Exception {
+        URL resourceUrl = Main.class.getClassLoader().getResource("webapp");
+        if (resourceUrl == null) {
+            System.out.println("No webapp resource found in classpath!");
+            return;
+        }
+
+        String jarPath = resourceUrl.getPath();
+        System.out.println("Resource URL: " + jarPath);
+
+        // Copy all webapp resources
+        java.util.Enumeration<URL> resources = Main.class.getClassLoader()
+            .getResources("webapp");
+        while (resources.hasMoreElements()) {
+            System.out.println("Found: " + resources.nextElement());
+        }
     }
 }
