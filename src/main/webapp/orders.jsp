@@ -59,7 +59,7 @@ if (cart_list != null) {
 				%>
 				<tr>
 					<td><%=o.getDate()%></td>
-					<td><img src="product_images/<%=o.getImage()%>" style="width:50px; height:50px"></td>					
+					<td><img src="images/<%=o.getImage()%>" style="width:50px; height:50px"></td>					
 					<td><%=o.getName()%></td>
 					<td><%=o.getCategory()%></td>
 					<td><%=o.getQuantity()%></td>

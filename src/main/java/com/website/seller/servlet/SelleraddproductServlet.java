@@ -66,9 +66,9 @@ public class SelleraddproductServlet extends HttpServlet {
 				SellerProductRepository repo= new SellerProductRepository();
 			boolean p = repo.insertIntoaddpro(productname, filename,price,description, category, address,status,add_userid, add_date);
 			//response.setContentType("text/html;charset=UTF-8");
-			System.out.println("seller product!!!");
+			System.out.println("seller product!!!"+" "+p);
 			
-			String path = getServletContext().getRealPath("")+"product_images";
+			String path = getServletContext().getRealPath("")+"images";
 
 			
 			File f = new File(path);

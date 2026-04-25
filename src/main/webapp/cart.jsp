@@ -60,7 +60,7 @@ if (cart_list != null) {
 					for (Cart c : cartProduct) {
 				%>
 				<tr>
-					<td><img src="product_images/<%=c.getImage()%>" style="width:50px; height:50px"></td>					
+					<td><img src="images/<%=c.getImage()%>" style="width:50px; height:50px"></td>					
 					<td><%=c.getName()%></td>
 					<td><%=c.getCategory()%></td>
 					<td><i class="fa fa-inr"></i><%=dcf.format(c.getPrice())%></td>

@@ -66,7 +66,7 @@ if (cart_list != null) {
 				for (ProductDetails p : products) {
 			%>
         <div class="col-4">
-            <img src="product_images/<%=p.getImage()%>">
+            <img src="images/<%=p.getImage()%>">
             <h4> Product Name : <%=p.getName()%></h4>
             <h6 class="category">Category : <%=p.getCategory()%></h6>
                       <div><%=p.getStars()%></div>
