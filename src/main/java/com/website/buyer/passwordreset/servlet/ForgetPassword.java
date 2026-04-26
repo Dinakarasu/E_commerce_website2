@@ -92,13 +92,30 @@ public class ForgetPassword extends HttpServlet {
                 message.setSubject("Reset Password - OTP");
 
                 String htmlContent =
-                    "<html><body style='font-family:Arial;'>"
-                    + "<h2>Hello, " + name + " 👋</h2>"
-                    + "<p>Your OTP is:</p>"
-                    + "<h1 style='color:#2E86C1;'>" + otpvalue + "</h1>"
-                    + "<p>Valid for 10 minutes. Do not share.</p>"
-                    + "<p>Regards,<br>E-Commerce Team</p>"
-                    + "</body></html>";
+                		 "<html>" +
+                                 "<body style='font-family: Segoe UI, Arial; background:#f4f4f4; padding:20px;'>" +
+
+                                 "<div style='max-width:600px; margin:auto; background:white; padding:20px; border-radius:10px;'>" +
+
+                                 "<h2>Hello, " + name + " 👋</h2>" +
+
+                                 "<p>We received a request to reset your password for your <b>E-Commerce Online Shopping</b> account.</p>" +
+
+                                 "<div style='text-align:center; margin:20px 0;'>" +
+                                 "<p>Your OTP is:</p>" +
+                                 "<h1 style='color:#2E86C1; letter-spacing:4px;'>" + otpvalue + "</h1>" +
+                                 "</div>" +
+
+                                 "<p>⏱ This OTP is valid for <b>10 minutes</b>.</p>" +
+                                 "<p style='color:red;'><b>Do not share this OTP with anyone.</b></p>" +
+
+                                 "<hr>" +
+
+                                 "<p style='font-size:12px; color:#888;'>If you didn’t request this, ignore this email and contact our support team immediately. </p>" +
+
+                                 "<p>Regards,<br><b>E-Commerce Team</b></p>" +
+
+                                 "</div></body></html>";
 
                 message.setContent(htmlContent, "text/html; charset=UTF-8");
                 Transport.send(message);
