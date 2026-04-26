@@ -23,7 +23,8 @@ if (cart_list != null) {
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website | home</title>
-    <%@include file="includes/header.jsp"%>    
+    <%@include file="includes/header.jsp"%> 
+    <link rel="icon" type="image/png" href="images/logo.png">   
 </head>
 <body>
 <%

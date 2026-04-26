@@ -2,6 +2,10 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page isELIgnored="false" %>
+<% String msg = (String) session.getAttribute("failedMsg");
+   if (msg != null) { session.removeAttribute("failedMsg"); %>
+     <p style="color:red;"><%= msg %></p>
+<% } %>
 <!DOCTYPE html>
 <html>
 <head>
