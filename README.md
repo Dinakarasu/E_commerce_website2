@@ -3,7 +3,7 @@
 This application is fully deployed and accessible online.
 
 🔗 **Live Demo:**
-👉 https://ecommercewebsite2-production.up.railway.app
+👉 https://ecommercewebsite2-live.up.railway.app
 
 ---
 
